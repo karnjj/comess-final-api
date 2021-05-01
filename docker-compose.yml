@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:latest
+    ports:
+      - 8888:8888
+    env_file:
+      - .env
+  main:
+    container_name: comess
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8000:8000
+    command: yarn run start:dev
+    links:
+      - mysql
