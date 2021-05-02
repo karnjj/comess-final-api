@@ -5,6 +5,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
+import { State } from 'src/core/constants';
 import { strToObj, objToStr } from '../utils';
 
 @Table({ tableName: 'room' })
@@ -14,7 +15,15 @@ export class Room extends Model {
   id: number;
 
   @Column
+  state: State;
+
+  @Column
   nProblem: number;
+
+  @Column({
+    type: DataType.BIGINT,
+  })
+  start: number;
 
   @Column({
     type: DataType.STRING,

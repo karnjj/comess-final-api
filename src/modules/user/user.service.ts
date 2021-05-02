@@ -1,5 +1,6 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { USER_REPOSITORY } from 'src/core/constants';
+import { Room } from 'src/entities/room.entity';
 import { User } from 'src/entities/user.entity';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
@@ -20,6 +21,15 @@ export class UserService {
     user.roomId = roomId;
     user.score = 0;
 
+    return await user.save();
+  }
+
+  async getGetScore(userId: string, room: Room) {
+    console.log(userId);
+
+    const user = await this.userRepository.findOne({ where: { id: userId } });
+    const dt = Date.now() - room.start;
+    user.score += Math.floor(10000000 / dt);
     return await user.save();
   }
 }

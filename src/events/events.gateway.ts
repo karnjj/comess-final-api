@@ -14,19 +14,15 @@ import { Server, Socket } from 'socket.io';
 export class EventsGateway {
   @WebSocketServer() server: Server;
   @SubscribeMessage('msgToServer')
-  handleMessage(client: Socket, payload: string): void {
-    const { userId } = client.handshake.query;
-    console.log(userId);
-
-    this.server.emit('msgToClient', userId);
-  }
-
   afterInit(server: Server) {}
 
   handleDisconnect(client: Socket) {}
 
   handleConnection(client: Socket, ...args: any[]) {
-    const { userId } = client.handshake.query;
+    // console.log('connect');
+    const { userId, roomId } = client.handshake.query;
     if (!userId) client.disconnect();
+    // console.log(roomId);
+    client.join(roomId);
   }
 }

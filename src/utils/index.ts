@@ -1,5 +1,6 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import sharp from 'sharp';
+import { copyFileSync } from 'fs';
+import * as sharp from 'sharp';
 
 export function getRandomInt(min: number, max: number) {
   min = Math.ceil(min);
@@ -30,24 +31,30 @@ export function objToStr(data: any[]) {
   return JSON.stringify(data);
 }
 
-export function cropImg(n: number, filename: string) {
-  const stepX = 100;
-  const stepY = 100;
+export async function cropImg(n: number, id: number) {
+  const stepX = Math.floor(856 / 6);
+  const stepY = Math.floor(500 / 6);
   const row = Math.floor((n - 1) / 6);
   const col = Math.floor((n - 1) % 6);
-  const originalImage = `rec/${filename}.jpg`;
-  const outputImage = `tmp/tmp.jpg`;
+  const originalImage = `source/${id}/pic.jpg`;
+  const outputImage = `tmp/${id}/${n}.jpg`;
 
-  sharp(originalImage)
-    .extract({
-      width: stepX,
-      height: stepY,
-      left: stepX * col,
-      top: stepY * row,
-    })
-    .toFile(outputImage)
-    .then(function (new_file_info) {})
-    .catch(function (err) {
-      throw new InternalServerErrorException();
-    });
+  try {
+    const new_file_info = await sharp(originalImage)
+      .extract({
+        width: stepX,
+        height: stepY,
+        left: stepX * col,
+        top: stepY * row,
+      })
+      .toFile(outputImage);
+    return outputImage;
+  } catch (err) {
+    console.log(err);
+  }
+}
+export function copyFullImg(id: number) {
+  const originalImage = `source/${id}/pic.jpg`;
+  const outputImage = `tmp/${id}/full.jpg`;
+  return copyFileSync(originalImage, outputImage);
 }

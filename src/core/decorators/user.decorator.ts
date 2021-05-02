@@ -4,6 +4,8 @@ import { Request } from 'express';
 export const User = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request: Request = ctx.switchToHttp().getRequest();
+    console.log('token' + request.headers.authorization);
+
     return request.headers.authorization;
   },
 );

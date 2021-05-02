@@ -30,7 +30,7 @@ export const databaseProviders = [
         },
       });
       sequelize.addModels([Room, User, Problem]);
-      await sequelize.sync();
+      // await sequelize.sync();
       return sequelize;
     },
   },

@@ -3,6 +3,8 @@ services:
   mysql:
     container_name: mysql
     image: mysql:latest
+    volumes:
+      - ./dump:/docker-entrypoint-initdb.d
     ports:
       - 8888:8888
     env_file:

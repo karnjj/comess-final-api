@@ -9,6 +9,11 @@ export class RoomController {
     private userService: UserService,
   ) {}
 
+  @Get(':roomId/start')
+  start(@Param('roomId') roomId: number) {
+    return this.roomService.start(roomId);
+  }
+
   @Get(':roomId')
   getRoom(@Param('roomId') roomId: number) {
     return this.roomService.findOneById(roomId);
@@ -20,10 +25,8 @@ export class RoomController {
   }
 
   @Post('/:roomId')
-  async joinRoom(@Param('roomId') roomId: number, @Body() body: any) {
-    console.log(body);
-
-    const user = await this.userService.create('name');
+  async joinRoom(@Param('roomId') roomId: number, @Body('name') name: string) {
+    const user = await this.userService.create(name);
     return this.userService.addToRoom(user.id, roomId);
   }
 }
