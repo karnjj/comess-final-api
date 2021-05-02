@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'fs';
 import { ROOM_REPOSITORY, State } from 'src/core/constants';
 import { Room } from 'src/entities/room.entity';
 import { EventsGateway } from 'src/events/events.gateway';
