@@ -14,6 +14,11 @@ export class RoomController {
     return this.roomService.start(roomId);
   }
 
+  @Get(':roomId/scoreboard')
+  getScoreboard(@Param('roomId') roomId: number) {
+    return this.userService.getUserByRoomId(roomId);
+  }
+
   @Get(':roomId')
   getRoom(@Param('roomId') roomId: number) {
     return this.roomService.findOneById(roomId);

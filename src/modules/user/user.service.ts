@@ -14,6 +14,17 @@ export class UserService {
     return await user.save();
   }
 
+  async getUserByRoomId(roomId: number) {
+    return await this.userRepository.findAll({
+      where: {
+        roomId
+      },
+      order: [
+        ['score','DESC']
+      ]
+    })
+  }
+
   async addToRoom(userId: string, roomId: number) {
     const user = await this.userRepository.findOne({ where: { id: userId } });
     if (!user) throw new UnauthorizedException();
